@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "730468408599",
+    "project_id": "mordidinha-93e28",
+    "storage_bucket": "mordidinha-93e28.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730468408599:android:f6bb42bf5c413181002b52",
+        "android_client_info": {
+          "package_name": "com.example.mordidinha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDph7b7AAQExIswE19mnrN273tran8ZY08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
