@@ -1,12 +1,8 @@
-// import 'dart:io';
-
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:mordidinha/widget/widget-support-text.dart';
-// // import 'package:random_string/random_string.dart';
 
 class AddFood extends StatefulWidget {
   const AddFood({super.key});
@@ -18,48 +14,35 @@ class AddFood extends StatefulWidget {
 class _AddFoodState extends State<AddFood> {
   final List<String> fooditems = ['Pizza', 'Bolo', 'Comida Japonesa', 'Doces'];
   String? value;
-  TextEditingController namecontroller = new TextEditingController();
-  TextEditingController pricecontroller = new TextEditingController();
-  TextEditingController detailcontroller = new TextEditingController();
-  // final ImagePicker _picker = ImagePicker();
-  // File?
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController pricecontroller = TextEditingController();
+  TextEditingController detailcontroller = TextEditingController();
+
   File? selectedImage;
 
-  Future getImage() async {
-    // var image = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> pickImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
 
-    selectedImage;
-    // File(image!.path);
-    setState(() {});
+    if (result != null) {
+      setState(() {
+        selectedImage = File(result.files.single.path!);
+      });
+    }
   }
 
   uploadItem() async {
     if (selectedImage != null &&
-        namecontroller.text != "" &&
-        pricecontroller.text != "" &&
-        detailcontroller.text != "") {
-      // String addId = randomAlphaNumeric(10);
-
-      // Reference firebaseStorageRef =
-      // FirebaseStorage.instance.ref().child("blogImages").child(addId);
-      // final UploadTask task = firebaseStorageRef.putFile(selectedImage!);
-
-      // var downloadUrl = await (await task).ref.getDownloadURL();
-
+        namecontroller.text.isNotEmpty &&
+        pricecontroller.text.isNotEmpty &&
+        detailcontroller.text.isNotEmpty) {
       Map<String, dynamic> addItem = {
-        // "Image": downloadUrl,
+        "Image": selectedImage,
         "Name": namecontroller.text,
         "Price": pricecontroller.text,
         "Detail": detailcontroller.text
       };
-      // await DatabaseMethods().addFoodItem(addItem, value!).then((value) {
-      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //       backgroundColor: Colors.orangeAccent,
-      //       content: Text(
-      //         "Food Item has been added Successfully",
-      //         style: TextStyle(fontSize: 18.0),
-      //       )));
-      // });
     }
   }
 
@@ -68,13 +51,14 @@ class _AddFoodState extends State<AddFood> {
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(
-              Icons.arrow_back_ios_new_outlined,
-              color: Colors.pink,
-            )),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios_new_outlined,
+            color: Colors.pink,
+          ),
+        ),
         centerTitle: true,
         title: Text(
           "Adicionar Item",
@@ -88,18 +72,11 @@ class _AddFoodState extends State<AddFood> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Adicionar imagem",
-                style: AppWidget.mdBoldTextStyle(),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
+              Text("Adicionar imagem", style: AppWidget.mdBoldTextStyle()),
+              SizedBox(height: 20.0),
               selectedImage == null
                   ? GestureDetector(
-                      onTap: () {
-                        getImage();
-                      },
+                      onTap: pickImage,
                       child: Center(
                         child: Material(
                           elevation: 4.0,
@@ -141,16 +118,9 @@ class _AddFoodState extends State<AddFood> {
                         ),
                       ),
                     ),
-              SizedBox(
-                height: 30.0,
-              ),
-              Text(
-                "Nome",
-                style: AppWidget.mdBoldTextStyle(),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
+              SizedBox(height: 30.0),
+              Text("Nome", style: AppWidget.mdBoldTextStyle()),
+              SizedBox(height: 10.0),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 width: MediaQuery.of(context).size.width,
@@ -165,16 +135,9 @@ class _AddFoodState extends State<AddFood> {
                       hintStyle: AppWidget.mdLightTextStyle()),
                 ),
               ),
-              SizedBox(
-                height: 30.0,
-              ),
-              Text(
-                "Preço",
-                style: AppWidget.mdBoldTextStyle(),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
+              SizedBox(height: 30.0),
+              Text("Preço", style: AppWidget.mdBoldTextStyle()),
+              SizedBox(height: 10.0),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 width: MediaQuery.of(context).size.width,
@@ -189,16 +152,9 @@ class _AddFoodState extends State<AddFood> {
                       hintStyle: AppWidget.mdLightTextStyle()),
                 ),
               ),
-              SizedBox(
-                height: 30.0,
-              ),
-              Text(
-                "Descrição",
-                style: AppWidget.mdBoldTextStyle(),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
+              SizedBox(height: 30.0),
+              Text("Descrição", style: AppWidget.mdBoldTextStyle()),
+              SizedBox(height: 10.0),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 width: MediaQuery.of(context).size.width,
@@ -214,16 +170,9 @@ class _AddFoodState extends State<AddFood> {
                       hintStyle: AppWidget.mdLightTextStyle()),
                 ),
               ),
-              SizedBox(
-                height: 20.0,
-              ),
-              Text(
-                "Categoria",
-                style: AppWidget.mdBoldTextStyle(),
-              ),
-              SizedBox(
-                height: 20.0,
-              ),
+              SizedBox(height: 20.0),
+              Text("Categoria", style: AppWidget.mdBoldTextStyle()),
+              SizedBox(height: 20.0),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.0),
                 width: MediaQuery.of(context).size.width,
@@ -254,13 +203,9 @@ class _AddFoodState extends State<AddFood> {
                   value: value,
                 )),
               ),
-              SizedBox(
-                height: 30.0,
-              ),
+              SizedBox(height: 30.0),
               GestureDetector(
-                onTap: () {
-                  uploadItem();
-                },
+                onTap: uploadItem,
                 child: Center(
                   child: Material(
                     elevation: 5.0,
